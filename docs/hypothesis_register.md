@@ -1508,3 +1508,41 @@ DR ×4, IX ×4 substantive + 1 cross-reference). Provisional Wave 1 count: 15 hy
 are tested first in Phase 2 (see `analysis_plan.md`). No hypothesis here has been tested; no
 finding, number, or conclusion in this file should be cited as evidence until it has gone
 through Phase 2 testing and been re-scored via the prioritisation framework.
+
+---
+
+## Phase 1 Broad Discovery — Cross-Reference (see `docs/findings_register.md`)
+
+`src/eda_discovery.py` ran a broad descriptive scan across the master dataset
+(`outputs/logs/eda_discovery.log`). This is **not** Phase 2 formal hypothesis
+testing — no confound model has been fitted for any hypothesis below, and
+sample sizes/multiple-comparison corrections vary in rigour by hypothesis.
+Treat every status below as a **prior for Phase 2 sequencing**, not a
+resolved result. Full detail, effect sizes, and caveats are in
+`docs/findings_register.md` (FR-IDs referenced below).
+
+| Hypothesis | Phase 1 status | Evidence | Notes |
+|---|---|---|---|
+| HP-1 | **Strongly supported** (for HiPo specifically) | FR-01 | Regrettable exit rate 10x higher for HiPo-flagged employees (V=0.151, largest effect in the scan). |
+| RA-3 | **Refined, not simply supported** | FR-01 vs. RA-3 context | Performance *rating* alone shows no significant link to voluntary/regrettable exit — the HP-1 signal is specifically about the `hipo_flag`, not current performance rating. Do not conflate the two going into Phase 2. |
+| SR-1 | **Strongly supported** | FR-05 | Never-responded population has a 24.5% voluntary exit rate vs. 6.0% for recent responders (V=0.133, second-largest effect in the scan). |
+| SR-3 | **Not supported** | FR-15 | The specific responder→non-responder transition adds no signal beyond recent non-response alone. |
+| AI-1 | **Resolved toward the culture explanation, not compensation** | FR-04 | Entity_B has the *highest* compa_ratio of any cohort but the *lowest* leadership-trust score; within-Entity_B leaver/stayer pay comparisons show no pay disadvantage for leavers. Full nested-model test still required before this is causal. |
+| AI-2 | **Suggestive support** | FR-02 (Entity_A context) | Entity_A shows the lowest attrition of all four cohorts, below even the NovaCorp-Origin baseline — consistent with genuine integration success, but the matched-tenure survivorship check (AI-2's actual design) has not yet been run. |
+| CP-1 / CP-4 | **Supported** | FR-06, FR-18 | Stalled high performers (eligible, high-performing, never recommended) leave at 9.6% vs. 5.3% for those recommended (p=0.004). Eligibility alone (FR-18) shows no effect — it's the recommendation that matters. |
+| CP-2 | **Strongly supported (Entity_C), supported (Entity_B)** | FR-03 | Entity_C promoted at roughly half the rate of every other cohort at every role level 1-4; performance rating mix is statistically indistinguishable across entities (FR-12), weighing against a merit-based explanation. |
+| CM-1 | **Not supported at the univariate, company-wide level** | FR-10 | compa_ratio quartile-within-level shows a flat, non-monotonic relationship with voluntary exit. Full multivariable CM-1 test still warranted before ruling this out entirely. |
+| CM-4 | **Untested** | — | Requires the performance × compensation interaction model specified in the hypothesis register; not run in this pass. |
+| HI-1 | **Reframed** | FR-09, FR-11 | Agency hires show the *lowest* (not highest) exit rate of any channel — contradicts the hypothesis's original framing. The real early-attrition signal is concentrated in `hire_source == 'acquisition'`, entangled with legacy_entity and post-acquisition timing (FR-09), not agency-vs-direct sourcing. |
+| MG-1 | **Supported, magnitude uncertain** | FR-07 | Unadjusted manager-level variance-decomposition proxy ≈ 12% — above the register's own "practically meaningful" threshold, but not yet controlled for department/entity composition as MG-1 specifies. |
+| MG-2 | **Likely not supported as stated — probable sparse-count artefact** | FR-07 | The "top decile of managers hold 100% of regrettable exits" figure is very likely explained by a rare outcome spread across many small teams (52% of managers have exactly zero exits), not genuine outlier management. Requires the empirical-Bayes shrinkage approach MG-2 already specifies before any claim is made. |
+| MG-3 | **Inconclusive — underpowered** | FR-17 | Directionally consistent (acting managers' teams show lower engagement, acting appointees show higher personal attrition) but n=82/166, neither significant. |
+| MG-4 | **Not supported** | FR-16 | No correlation between span of control and either voluntary exit rate or manager effectiveness (Spearman r ≈ −0.01 for both). |
+| DP-3 | **Untested** | — | Not run in this pass; requires the engagement→goal_achievement regression DP-3 specifies. |
+
+All other hypotheses (RA-1/2/4/5, DP-1/2/4, HI-2/3/4, CP-3, AI-3/4/5, CM-2/3,
+HP-2/3/4, SR-2/4, DR-1/2/3/4, IX-1/2/3/5) were not directly touched by this
+broad scan and remain fully open for Phase 2, though several are informed by
+the additional context findings in `docs/findings_register.md` Section 2
+(e.g. DR-1's "do drivers differ by department" is partially previewed by
+FR-02's department-by-department Entity_B breakdown).
