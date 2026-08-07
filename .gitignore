@@ -5,6 +5,13 @@
 /engagement.csv
 /performance.csv
 
+# Cleaned data derived from the raw CSVs above — same rationale, regenerate
+# with `python src/clean_data.py`. Large, reproducible, not versioned.
+/data_clean/
+
+# Run logs — transient, regenerated on every pipeline run.
+/outputs/logs/
+
 # OS / editor junk
 .DS_Store
 Thumbs.db

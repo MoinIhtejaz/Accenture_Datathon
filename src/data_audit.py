@@ -35,81 +35,35 @@ repository root regardless of the current working directory.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
+from load_data import (
+    BASE_DIR,
+    CYCLE_GRACE_DAYS,
+    CYCLE_WINDOWS,
+    ENGAGEMENT_DIMENSIONS,
+    EXPECTED_CATEGORIES,
+    OUTPUT_REPORTS_DIR,
+    OUTPUT_TABLES_DIR,
+    WINDOW_END,
+    WINDOW_START,
+    load_raw_datasets,
+)
+
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_FILES = {
-    "employees": BASE_DIR / "employees.csv",
-    "attrition_log": BASE_DIR / "attrition_log.csv",
-    "engagement": BASE_DIR / "engagement.csv",
-    "performance": BASE_DIR / "performance.csv",
-}
-OUTPUT_TABLES_DIR = BASE_DIR / "outputs" / "tables"
-OUTPUT_REPORTS_DIR = BASE_DIR / "outputs" / "reports"
-
-WINDOW_START = pd.Timestamp("2024-01-01")
-WINDOW_END = pd.Timestamp("2025-12-31")
+# Paths, the observation window, category vocabularies, and the cycle-window
+# grace period now live in load_data.py (single source of truth, shared with
+# src/clean_data.py and src/validation.py). Only audit-specific configuration
+# (the four classification labels) stays here.
 
 ERROR = "ERROR"
 EXPECTED_MISSINGNESS = "EXPECTED MISSINGNESS"
 BUSINESS_SIGNAL = "BUSINESS SIGNAL"
 UNKNOWN = "UNKNOWN / REQUIRES ASSUMPTION"
-
-ENGAGEMENT_DIMENSIONS = [
-    "manager_effectiveness", "psychological_safety", "recognition",
-    "career_development", "senior_leadership_trust", "purpose_meaning",
-    "wellbeing", "confidence_in_role_future",
-]
-
-# Cycle windows used only to test whether a review's *date* is consistent with its
-# *label*; a 60-day grace period after each nominal half-year absorbs legitimately
-# late-filed reviews without flagging them.
-CYCLE_WINDOWS = {
-    "2024-H1": (pd.Timestamp("2024-01-01"), pd.Timestamp("2024-06-30")),
-    "2024-H2": (pd.Timestamp("2024-07-01"), pd.Timestamp("2024-12-31")),
-    "2025-H1": (pd.Timestamp("2025-01-01"), pd.Timestamp("2025-06-30")),
-}
-CYCLE_GRACE_DAYS = 60
-
-EXPECTED_CATEGORIES = {
-    "employees": {
-        "status": {"active", "departed"},
-        "department": {
-            "Retail Banking", "Technology", "Risk & Compliance", "Insurance",
-            "Wealth Management", "Corporate Operations", "Executive Leadership",
-        },
-        "role_family": {
-            "Operations-Processing", "Technology", "Client-Advisory",
-            "Risk-Compliance", "Corporate-Support", "Executive", "Management",
-        },
-        "gender": {"Female", "Male", "Non-binary", "Prefer not to say"},
-        "contract_type": {"Full-time", "Part-time", "Fixed-term", "Casual"},
-        "hire_source": {"agency", "direct", "referral", "graduate", "acquisition"},
-        "legacy_entity_code": {"Entity_A", "Entity_B", "Entity_C", "NovaCorp-Origin"},
-    },
-    "attrition_log": {
-        "exit_type": {"voluntary", "involuntary"},
-        "performance_band_at_exit": {
-            "Outstanding", "High Performer", "Meets Expectations",
-            "Below Expectations", "Unsatisfactory",
-        },
-        "pathway": {"push", "pull"},
-    },
-    "performance": {
-        "performance_rating": {
-            "Outstanding", "High Performer", "Meets Expectations",
-            "Below Expectations", "Unsatisfactory",
-        },
-        "review_cycle": {"2024-H1", "2024-H2", "2025-H1"},
-    },
-}
 
 
 # ---------------------------------------------------------------------------
@@ -151,33 +105,10 @@ class IssueLog:
 
 def load_datasets() -> dict[str, pd.DataFrame]:
     """Load all four source CSVs with explicit dtypes/date parsing. Read-only —
-    never writes back to these paths."""
-    employees = pd.read_csv(
-        DATA_FILES["employees"],
-        dtype={"employee_id": "string", "manager_id": "string"},
-        parse_dates=["hire_date", "exit_date"],
-    )
-    attrition = pd.read_csv(
-        DATA_FILES["attrition_log"],
-        dtype={"employee_id": "string", "manager_id_at_exit": "string"},
-        parse_dates=["exit_date"],
-    )
-    engagement = pd.read_csv(
-        DATA_FILES["engagement"],
-        dtype={"employee_id": "string"},
-        parse_dates=["survey_date"],
-    )
-    performance = pd.read_csv(
-        DATA_FILES["performance"],
-        dtype={"employee_id": "string", "reviewer_id": "string"},
-        parse_dates=["review_date"],
-    )
-    return {
-        "employees": employees,
-        "attrition_log": attrition,
-        "engagement": engagement,
-        "performance": performance,
-    }
+    never writes back to these paths. Thin wrapper around
+    load_data.load_raw_datasets() kept for call-site compatibility within this
+    module."""
+    return load_raw_datasets(parse_dates=True)
 
 
 # ---------------------------------------------------------------------------
