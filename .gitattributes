@@ -1,7 +1,0 @@
-# Force binary handling — team is cross-platform (Mac + Windows); prevents
-# line-ending conversion from silently corrupting binary files.
-*.pdf -text -diff
-*.docx -text -diff
-*.csv -text
-*.png -text -diff
-*.xlsx -text -diff
