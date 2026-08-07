@@ -1,0 +1,54 @@
+dataset,column,dtype,n_total,n_missing,pct_missing,n_unique,classification
+employees,employee_id,string,13403,0,0.0,13403,n/a (no missingness)
+employees,name,object,13403,0,0.0,12378,n/a (no missingness)
+employees,hire_date,datetime64[ns],13403,0,0.0,6588,n/a (no missingness)
+employees,exit_date,datetime64[ns],13403,12003,89.555,480,EXPECTED MISSINGNESS
+employees,status,object,13403,0,0.0,2,n/a (no missingness)
+employees,department,object,13403,0,0.0,7,n/a (no missingness)
+employees,role_family,object,13403,0,0.0,7,n/a (no missingness)
+employees,role_level,int64,13403,0,0.0,8,n/a (no missingness)
+employees,job_title,object,13403,0,0.0,65,n/a (no missingness)
+employees,salary,float64,13403,0,0.0,2065,n/a (no missingness)
+employees,compa_ratio,float64,13403,0,0.0,53,n/a (no missingness)
+employees,gender,object,13403,0,0.0,4,n/a (no missingness)
+employees,age_band,object,13403,0,0.0,9,n/a (no missingness)
+employees,cultural_background,object,13403,0,0.0,11,n/a (no missingness)
+employees,contract_type,object,13403,0,0.0,4,n/a (no missingness)
+employees,hipo_flag,bool,13403,0,0.0,2,n/a (no missingness)
+employees,promotion_eligible,bool,13403,0,0.0,2,n/a (no missingness)
+employees,manager_id,string,13403,1,0.007,4506,EXPECTED MISSINGNESS
+employees,hire_source,object,13403,0,0.0,5,n/a (no missingness)
+employees,legacy_entity_code,object,13403,0,0.0,4,n/a (no missingness)
+employees,data_source_system,object,13403,0,0.0,4,n/a (no missingness)
+employees,days_to_fill,float64,13403,0,0.0,77,n/a (no missingness)
+employees,tenure_months,int64,13403,0,0.0,463,n/a (no missingness)
+employees,acting_appointment,bool,13403,0,0.0,2,n/a (no missingness)
+attrition_log,employee_id,string,1400,0,0.0,1400,n/a (no missingness)
+attrition_log,exit_date,datetime64[ns],1400,0,0.0,480,n/a (no missingness)
+attrition_log,exit_type,object,1400,0,0.0,2,n/a (no missingness)
+attrition_log,stated_exit_reason,object,1400,0,0.0,11,n/a (no missingness)
+attrition_log,notice_period_served,bool,1400,0,0.0,2,n/a (no missingness)
+attrition_log,regrettable_flag,bool,1400,0,0.0,2,n/a (no missingness)
+attrition_log,performance_band_at_exit,object,1400,0,0.0,5,n/a (no missingness)
+attrition_log,salary_at_exit,float64,1400,0,0.0,832,n/a (no missingness)
+attrition_log,manager_id_at_exit,string,1400,0,0.0,1196,n/a (no missingness)
+attrition_log,pathway,object,1400,0,0.0,2,n/a (no missingness)
+engagement,employee_id,string,55971,0,0.0,13096,n/a (no missingness)
+engagement,wave_number,int64,55971,0,0.0,5,n/a (no missingness)
+engagement,survey_date,datetime64[ns],55971,0,0.0,121,n/a (no missingness)
+engagement,response_flag,bool,55971,0,0.0,2,n/a (no missingness)
+engagement,manager_effectiveness,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+engagement,psychological_safety,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+engagement,recognition,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+engagement,career_development,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+engagement,senior_leadership_trust,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+engagement,purpose_meaning,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+engagement,wellbeing,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+engagement,confidence_in_role_future,float64,55971,10264,18.338,401,EXPECTED MISSINGNESS
+performance,employee_id,string,34979,0,0.0,13294,n/a (no missingness)
+performance,review_date,datetime64[ns],34979,0,0.0,277,n/a (no missingness)
+performance,performance_rating,object,34979,0,0.0,5,n/a (no missingness)
+performance,review_cycle,object,34979,0,0.0,3,n/a (no missingness)
+performance,promotion_recommendation,bool,34979,0,0.0,2,n/a (no missingness)
+performance,goal_achievement_score,float64,34979,0,0.0,893,n/a (no missingness)
+performance,reviewer_id,string,34979,0,0.0,4899,n/a (no missingness)
