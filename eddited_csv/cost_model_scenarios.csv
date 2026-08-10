@@ -1,0 +1,10 @@
+scenario,n_exits,n_per_year,mean_salary,replacement_mult,cost_$M_per_yr
+Low (conservative),109,54,129563,1.0x,6.0
+Low (conservative),109,54,129563,1.5x (brief),9.0
+Low (conservative),109,54,129563,2.0x,12.0
+Central,403,202,124872,1.0x,21.4
+Central,403,202,124872,1.5x (brief),32.1
+Central,403,202,124872,2.0x,42.8
+High (broad),783,392,126226,1.0x,42.0
+High (broad),783,392,126226,1.5x (brief),63.0
+High (broad),783,392,126226,2.0x,84.0
