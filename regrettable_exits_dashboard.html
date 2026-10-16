@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>NovaCorp — Regrettable Exits Profile</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--ink:#1a1a2e;--muted:#6b7280;--line:#e5e7eb;--a:#A100FF;--b:#7B2FF7;--c:#00C2B2;--d:#FF6B35;--bg:#fff}
+*{box-sizing:border-box}
+body{margin:0;padding:32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:var(--ink);background:#f7f7fb}
+.wrap{max-width:1280px;margin:0 auto}
+h1{font-size:24px;margin:0 0 4px;letter-spacing:-.02em}
+.sub{color:var(--muted);font-size:14px;margin:0 0 24px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.kpi .v{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.1}
+.kpi .l{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.35}
+.grid{display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:16px;margin-bottom:24px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:18px 20px 12px}
+.card h2{font-size:14px;margin:0 0 2px;font-weight:620}
+.card .cap{font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.chartbox{position:relative;height:280px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 18px;font-size:13px;line-height:1.55;color:#7c2d12}
+.note b{font-weight:640}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><div class="wrap">
+
+<h1>Regrettable Exits — Talent Signal Profile</h1>
+<p class="sub">All 153 employees flagged <code>regrettable_flag = TRUE</code> (100% voluntary departures). Three talent markers shown side by side.</p>
+
+<div class="kpis">
+  <div class="kpi"><div class="v" style="color:var(--a)">76 / 153</div><div class="l">Flagged high-potential</div></div>
+  <div class="kpi"><div class="v" style="color:var(--c)">37 / 153</div><div class="l">Promotion-eligible at exit</div></div>
+  <div class="kpi"><div class="v" style="color:var(--d)">128 / 153</div><div class="l">Outstanding or High Performer at exit</div></div>
+  <div class="kpi"><div class="v">59</div><div class="l">HiPo but <i>not</i> promotion-eligible</div></div>
+</div>
+
+<div class="grid">
+  <div class="card"><h2>High-potential flag</h2><p class="cap">hipo_flag</p><div class="chartbox"><canvas id="c1"></canvas></div></div>
+  <div class="card"><h2>Promotion eligibility</h2><p class="cap">promotion_eligible</p><div class="chartbox"><canvas id="c2"></canvas></div></div>
+  <div class="card"><h2>Performance band at exit</h2><p class="cap">performance_band_at_exit</p><div class="chartbox"><canvas id="c3"></canvas></div></div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <h2>By department</h2><p class="cap">Share of each department's regrettable leavers carrying each marker</p>
+  <table><thead><tr><th>Department</th><th class="n">Leavers</th><th class="n">HiPo</th><th class="n">Promo-eligible</th><th class="n">Top performer</th></tr></thead>
+  <tbody><tr><td>Risk & Compliance</td><td class=n>33</td><td class=n>61%</td><td class=n>21%</td><td class=n>67%</td></tr>
+<tr><td>Technology</td><td class=n>31</td><td class=n>45%</td><td class=n>29%</td><td class=n>90%</td></tr>
+<tr><td>Corporate Operations</td><td class=n>25</td><td class=n>64%</td><td class=n>28%</td><td class=n>92%</td></tr>
+<tr><td>Insurance</td><td class=n>24</td><td class=n>38%</td><td class=n>25%</td><td class=n>88%</td></tr>
+<tr><td>Retail Banking</td><td class=n>23</td><td class=n>39%</td><td class=n>13%</td><td class=n>83%</td></tr>
+<tr><td>Wealth Management</td><td class=n>15</td><td class=n>47%</td><td class=n>33%</td><td class=n>93%</td></tr>
+<tr><td>Executive Leadership</td><td class=n>2</td><td class=n>50%</td><td class=n>0%</td><td class=n>50%</td></tr></tbody></table>
+</div>
+
+<div class="note"><b>Worth flagging:</b> 128 of 153 regrettable leavers (84%) left rated Outstanding or High Performer, yet only 37 were promotion-eligible. 59 people carried a HiPo flag with no promotion path open to them. Separately, every "Below Expectations" and "Unsatisfactory" record in this file also carries <code>hipo_flag = TRUE</code> — check whether that is a real pattern or a tagging artefact before it goes in the deck.</div>
+
+</div>
+<script>
+const D = {"n": 153, "hipo": {"labels": ["HiPo", "Not HiPo"], "data": [76, 77]}, "promo": {"labels": ["Eligible", "Not eligible"], "data": [37, 116]}, "band": {"labels": ["Outstanding", "High Performer", "Meets Expectations", "Below Expectations", "Unsatisfactory"], "data": [97, 31, 17, 4, 4]}, "dept_hipo": {}, "table": [{"dept": "Risk & Compliance", "n": 33, "hipo": 61, "promo": 21, "top": 67}, {"dept": "Technology", "n": 31, "hipo": 45, "promo": 29, "top": 90}, {"dept": "Corporate Operations", "n": 25, "hipo": 64, "promo": 28, "top": 92}, {"dept": "Insurance", "n": 24, "hipo": 38, "promo": 25, "top": 88}, {"dept": "Retail Banking", "n": 23, "hipo": 39, "promo": 13, "top": 83}, {"dept": "Wealth Management", "n": 15, "hipo": 47, "promo": 33, "top": 93}, {"dept": "Executive Leadership", "n": 2, "hipo": 50, "promo": 0, "top": 50}], "kpi": {"hipo": 76, "promo": 37, "top": 128, "hipo_blocked": 59}};
+const font = {family:"-apple-system,BlinkMacSystemFont,Segoe UI,Inter,sans-serif"};
+Chart.defaults.font.family = font.family;
+const base = (horiz)=>({
+  indexAxis: horiz?'y':'x',
+  responsive:true, maintainAspectRatio:false,
+  plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:ctx=>` ${ctx.parsed[horiz?'x':'y']} people (${Math.round(100*ctx.parsed[horiz?'x':'y']/D.n)}%)`}}},
+  scales:{
+    x:{grid:{display:horiz,color:'#f0f0f4'},border:{display:false},ticks:{font:{size:11.5}}},
+    y:{grid:{display:!horiz,color:'#f0f0f4'},border:{display:false},beginAtZero:true,ticks:{font:{size:11.5},precision:0}}
+  }
+});
+const lbl = {
+  id:'lbl',
+  afterDatasetsDraw(ch,a,o){
+    const {ctx}=ch; ctx.save();
+    ctx.font='600 12px '+font.family; ctx.fillStyle='#1a1a2e';
+    ch.getDatasetMeta(0).data.forEach((el,i)=>{
+      const v=ch.data.datasets[0].data[i]; if(!v)return;
+      const t=v+'  ('+Math.round(100*v/D.n)+'%)';
+      if(o.horiz){ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(t,el.x+8,el.y);}
+      else{ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(t,el.x,el.y-6);}
+    });
+    ctx.restore();
+  }
+};
+function mk(id,cfg,colors,horiz){
+  new Chart(document.getElementById(id),{
+    type:'bar',
+    data:{labels:cfg.labels,datasets:[{data:cfg.data,backgroundColor:colors,borderRadius:5,barPercentage:horiz?0.72:0.55,maxBarThickness:56}]},
+    options:{...base(horiz), layout:{padding:{top:horiz?4:26,right:horiz?76:8}}, plugins:{...base(horiz).plugins, lbl:{horiz}}},
+    plugins:[lbl]
+  });
+}
+mk('c1',D.hipo ,['#A100FF','#d9c2ec'],false);
+mk('c2',D.promo,['#00C2B2','#bfe8e4'],false);
+mk('c3',D.band ,['#A100FF','#7B2FF7','#9aa1b1','#FF6B35','#d1495b'],true);
+</script></body></html>
